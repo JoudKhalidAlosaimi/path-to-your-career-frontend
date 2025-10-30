@@ -7,12 +7,14 @@ import NavBar from './components/NavBar/NavBar'
 import JobIndex from './components/JobIndex/JobIndex'
 import CourseIndex from './components/CourseIndex/CourseIndex'
 import BootcampIndex from './components/BootcampIndex/BootcampIndex'
+import HomePage from './components/HomePage/HomePage'
 
 function App() {
   return (
     <Router>
       <NavBar/>
       <Routes>
+        <Route path='/home' element={<HomePage/>}/>
         <Route path='/jobs' element={<JobIndex/>}/>
         <Route path='/courses' element={<CourseIndex/>}/>
         <Route path='/bootcamps' element={<BootcampIndex/>}/>
