@@ -8,12 +8,21 @@ import JobIndex from './components/JobIndex/JobIndex'
 import CourseIndex from './components/CourseIndex/CourseIndex'
 import BootcampIndex from './components/BootcampIndex/BootcampIndex'
 import HomePage from './components/HomePage/HomePage'
+import Register from './components/Auth/Register'
+
+
+import { getUserFromToken } from './lib/auth'
+
 
 function App() {
+
+  const [user, setUser] = useState(getUserFromToken());
+
   return (
     <Router>
-      <NavBar/>
+      <NavBar user={user} setUser={setUser}/>
       <Routes>
+        <Route path='/register' element={<Register/>}/>
         <Route path='/home' element={<HomePage/>}/>
         <Route path='/jobs' element={<JobIndex/>}/>
         <Route path='/courses' element={<CourseIndex/>}/>

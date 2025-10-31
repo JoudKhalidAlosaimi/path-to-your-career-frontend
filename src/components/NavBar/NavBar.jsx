@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 
-function NavBar() {
+function NavBar({ user, setUser }) {
     return (
         <nav>
             <div className="navbar-leftside">
@@ -16,7 +16,7 @@ function NavBar() {
             
             <div className="navbar-rightside">
                 <button className="login-btn">Login</button>
-                <button className="register-btn">Create account</button>
+                <Link to={'/register'}>Create an account</Link>
             </div>
         </nav>
     )
