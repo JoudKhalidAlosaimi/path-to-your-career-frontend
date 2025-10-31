@@ -14,6 +14,7 @@ import Login from './components/Auth/Login'
 
 
 import { getUserFromToken } from './lib/auth'
+import UserProfile from './components/UserProfile/UserProfile'
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
       <Routes>
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login setUser={setUser}/>}/>
-
+        <Route path='/profile' element={<UserProfile user={user}/>} />
 
         <Route path='/home' element={<HomePage/>}/>
         <Route path='/jobs' element={<JobIndex/>}/>
