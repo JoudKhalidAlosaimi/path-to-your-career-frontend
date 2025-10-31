@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+import LogOutButton from "../Auth/LogOutButton"
 
 function NavBar({ user, setUser }) {
     return (
@@ -15,8 +16,16 @@ function NavBar({ user, setUser }) {
             </div>
             
             <div className="navbar-rightside">
-                <Link to={'/login'}>Login</Link>
-                <Link to={'/register'}>Create an account</Link>
+                {
+                    user
+                    ?
+                        <LogOutButton setUser={setUser} />
+                    :
+                    <>
+                        <Link to={'/login'}>Login</Link>
+                        <Link to={'/register'}>Create an account</Link>
+                    </>
+                }
             </div>
         </nav>
     )
