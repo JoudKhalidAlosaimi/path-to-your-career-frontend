@@ -8,7 +8,7 @@ export default function Register() {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -20,7 +20,7 @@ export default function Register() {
                 password, 
                 email
             })
-            // navigate('/login')
+            navigate('/login')
         } catch (err) {
             console.error(err)
             alert('Signup failed')

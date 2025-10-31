@@ -15,7 +15,7 @@ function NavBar({ user, setUser }) {
             </div>
             
             <div className="navbar-rightside">
-                <button className="login-btn">Login</button>
+                <Link to={'/login'}>Login</Link>
                 <Link to={'/register'}>Create an account</Link>
             </div>
         </nav>
