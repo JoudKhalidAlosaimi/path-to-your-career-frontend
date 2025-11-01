@@ -44,8 +44,8 @@ return (
                     <label htmlFor='last_name'>Last Name:</label>
                     <input value={formData.last_name} onChange={handleChange} id='last_name' name='last_name' />
 
-                    <label htmlFor='username'>username:</label>
-                    <input value={formData.username} onChange={handleChange} id='username' name='username' />
+                    {/* <label htmlFor='username'>username:</label>
+                    <input value={formData.username} onChange={handleChange} id='username' name='username' /> */}
 
                     <label htmlFor='email'>email:</label>
                     <input value={formData.email} onChange={handleChange} id='email' name='email' />

@@ -1,5 +1,4 @@
 import {useState} from 'react'
-import axios from 'axios'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router'
 
