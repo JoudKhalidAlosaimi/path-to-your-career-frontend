@@ -20,9 +20,22 @@ function App() {
 
   const [user, setUser] = useState(getUserFromToken());
 
+  const [isDarkMode, setIsDarkMode] = useState(true)
+
+  function handleMode(){
+    if(isDarkMode){
+      setIsDarkMode(false)
+    } else {
+      setIsDarkMode(true)
+    }
+  }
+
   return (
-    <Router>
-      <NavBar user={user} setUser={setUser}/>
+  <Router>
+    <div className={isDarkMode ? "dark" : ""}>
+      <div className="bg-white dark:bg-gray-900 min-h-screen text-black dark:text-white">
+
+      <NavBar user={user} setUser={setUser} handleMode={handleMode} isDarkMode={isDarkMode}/>
       <Routes>
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login setUser={setUser}/>}/>
@@ -33,6 +46,8 @@ function App() {
         <Route path='/courses' element={<CourseIndex/>}/>
         <Route path='/bootcamps' element={<BootcampIndex/>}/>
       </Routes>
+    </div>
+    </div>
     </Router>
   )
 }
