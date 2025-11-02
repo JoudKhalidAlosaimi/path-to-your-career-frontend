@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import BootcampSearch from './BootcampSearch'
 
 function BootcampIndex({user}) {
     // TODO
@@ -8,16 +9,29 @@ function BootcampIndex({user}) {
     // display all the bootcamps using map
 
     const [bootcamps,setBootcamps] = useState([])
+    const [displayedBootcamps,setDisplayedBootcamps] = useState([])
     const [application, setApplication] = useState({})
 
     async function getAllBootcamps(){
         const response = await axios.get('http://127.0.0.1:8000/api/bootcamps/')
         setBootcamps(response.data)
+        setDisplayedBootcamps(response.data)
     }
 
     useEffect(() => {
         getAllBootcamps()
     }, [])
+
+    const searchBootcamps = (searchInput) => {
+    const filteredBootcamps = bootcamps.filter(bootcamp => 
+        (bootcamp.title || '').toLowerCase().includes((searchInput || '').toLowerCase())
+    )
+    setDisplayedBootcamps(filteredBootcamps);
+    }
+
+    const reset = () => {
+        setDisplayedBootcamps(bootcamps)
+    }
 
     async function handleApplication(bootcampId) {
         const ApplicationData = {
@@ -54,10 +68,12 @@ function BootcampIndex({user}) {
     return (
         <div className="min-h-screen p-8 pt-30">
             <h1 className="text-3xl font-bold text-center mb-8">Available Bootcamps</h1>
+            <h2 className="text-3xl font-bold text-center mb-8">Search</h2>
+            <BootcampSearch searchBootcamps={searchBootcamps} displayedBootcamps={displayedBootcamps} reset={reset}/>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
-                    bootcamps.length ?
-                    bootcamps.map((bootcamp,index) => {
+                    displayedBootcamps.length ?
+                    displayedBootcamps.map((bootcamp,index) => {
                         return (
                             <div key={index} className="bg-white shadow-md rounded-xl p-6">
                                 <h2 className="text-xl font-semibold text-gray-800 mb-2">{bootcamp.title}</h2>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-function JobSearch({searchJobs,displayedJobs,setJobs,reset}) {
+function JobSearch({searchJobs,displayedJobs,reset}) {
 
     const [searchInput, setSearchInput]= useState()
     const [prevSearchTerm,setPrevSearchTerm] = useState('')
@@ -35,7 +35,7 @@ function JobSearch({searchJobs,displayedJobs,setJobs,reset}) {
                 <input value={searchInput} onChange={handleChange} />
                 <button>Search</button>
             </form>
-            <p>Number of results: {displayedJobs}</p>
+            <p>Number of results: {displayedJobs.length}</p>
             <button onClick={reset}>Show all jobs</button>
         </div>
     )

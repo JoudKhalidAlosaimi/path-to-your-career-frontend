@@ -28,13 +28,13 @@ function CourseSearch({searchCourses,displayedCourses,reset}) {
 return (
     <div>
         {lastSearch(prevSearchTerm)}
-            <form onSubmit={handleSubmit}>
-                <label>Search Term: </label>
-                <input value={searchInput} onChange={handleChange} />
-                <button>Search</button>
-            </form>
-            <p>Number of results: {displayedCourses}</p>
-            <button onClick={reset}>Show all courses</button>
+        <form onSubmit={handleSubmit}>
+            <label>Search Term: </label>
+            <input value={searchInput} onChange={handleChange} />
+            <button>Search</button>
+        </form>
+        <p>Number of results: {displayedCourses.length}</p>
+        <button onClick={reset}>Show all courses</button>
     </div>
 )
 }

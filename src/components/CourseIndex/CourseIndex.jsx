@@ -16,6 +16,8 @@ function CourseIndex({user}) {
     async function getAllCourses(){
         const response = await axios.get('http://127.0.0.1:8000/api/courses/')
         setCourses(response.data)
+        setDisplayedCourses(response.data)
+
     }
 
     useEffect(() => {
@@ -69,7 +71,7 @@ function CourseIndex({user}) {
         <div className="min-h-screen p-8 pt-30">
             <h1 className="text-3xl font-bold text-center mb-8">Available Courses</h1>
             <h2 className="text-3xl font-bold text-center mb-8">Search</h2>
-            <CourseSearch searchCourses={searchCourses} displayedCourses={displayedCourses.length} reset={reset}/>
+            <CourseSearch searchCourses={searchCourses} displayedCourses={displayedCourses} reset={reset}/>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
                     displayedCourses.length ?
