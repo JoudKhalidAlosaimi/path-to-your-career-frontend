@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { authRequest, getUserFromToken, clearTokens } from "../../lib/auth"
+import JobSearch from './JobSearch'
 
 function JobIndex({user}) {
     // TODO
@@ -9,17 +10,30 @@ function JobIndex({user}) {
     // display all our jobs
 
     const [jobs,setJobs] = useState([])
+    const [displayedJobs,setDisplayedJobs] = useState([])
     const [application, setApplication] = useState({})
 
 
     async function getAllJobs(){
         const response = await axios.get('http://127.0.0.1:8000/api/jobs/')
         setJobs(response.data)
+        setDisplayedJobs(response.data)
     }
 
     useEffect(() => {
             getAllJobs()
         }, [])
+
+    const searchJobs = (searchInput) => {
+    const filteredJobs = jobs.filter(job => 
+        (job.title || '').toLowerCase().includes((searchInput || '').toLowerCase())
+    )
+    setDisplayedJobs(filteredJobs);
+    }
+
+    const reset = () => {
+        setDisplayedJobs(jobs)
+    }
 
     async function handleApplication(jobId) {
         const ApplicationData = {
@@ -57,10 +71,12 @@ function JobIndex({user}) {
     return (
         <div className="min-h-screen p-8 pt-30">
             <h1 className="text-3xl font-bold text-center mb-8">Available Jobs</h1>
+            <h2 className="text-3xl font-bold text-center mb-8">Search</h2>
+            <JobSearch searchJobs={searchJobs} displayedJobs={displayedJobs.length} setJobs={jobs} reset={reset}/>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
-                    jobs.length ?
-                    jobs.map((job,idx) => {
+                    displayedJobs.length ?
+                    displayedJobs.map((job,idx) => {
                         return (
                             <div key={idx} className="bg-white shadow-md rounded-xl p-6">
                                 <h2 className="text-xl font-semibold text-gray-800 mb-2">{job.title}</h2>
