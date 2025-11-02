@@ -44,7 +44,7 @@ function App() {
         <Route path='/home' element={<HomePage/>}/>
         <Route path='/jobs' element={<JobIndex user={user}/>}/>
         <Route path='/courses' element={<CourseIndex user={user}/>}/>
-        <Route path='/bootcamps' element={<BootcampIndex/>}/>
+        <Route path='/bootcamps' element={<BootcampIndex user={user}/>}/>
       </Routes>
     </div>
     </div>
