@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 function HomePage() {
     return (
         <>
-            <section className='relative z-0 flex flex-col justify-center items-center dark:text-white overflow-hidden h-screen'>
+            <section className='relative z-0 flex flex-col justify-center items-center dark:text-white h-screen'>
                 <h1 className="text-center text-6xl font-bold tracking-wider">A Path to Your Career</h1>
                 <h2 className="text-center text-xl mt-4 opacity-80">Explore jobs, courses and bootcamps that shape your future </h2>
 

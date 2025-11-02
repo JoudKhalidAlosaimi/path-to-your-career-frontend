@@ -72,17 +72,17 @@ function JobIndex({user}) {
                                     application[job.id] 
                                     ?
                                     <div className="mt-4">
-                                    <p className="text-sm font-medium text-gray-700 mb-2">
-                                        Status: <span className="text-blue-600">{application[job.id].status}</span>
-                                    </p>
-                                    <select 
-                                    onChange={(e) => {handleApplicationStatusChange(e,job.id,application[job.id].id)}} 
-                                    value={application[job.id].status}
-                                    className="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                        <option value="Applied">Applied</option>
-                                        <option value="Rejected">Rejected</option>
-                                        <option value="Interview">Interview</option>
-                                    </select>
+                                        <p className="text-sm font-medium text-gray-700 mb-2">
+                                            Status: <span className="text-blue-600">{application[job.id].status}</span>
+                                        </p>
+                                        <select 
+                                        onChange={(e) => {handleApplicationStatusChange(e,job.id,application[job.id].id)}} 
+                                        value={application[job.id].status}
+                                        className="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            <option value="Applied">Applied</option>
+                                            <option value="Rejected">Rejected</option>
+                                            <option value="Interview">Interview</option>
+                                        </select>
                                     </div>
                                     :
                                     <button 
