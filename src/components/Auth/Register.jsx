@@ -28,7 +28,7 @@ export default function Register() {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='pt-30'>
             <h2>Create an account</h2>
             <input placeholder='firstName' value={firstName} onChange={e => setFirstName(e.target.value)} />
             <input placeholder='lastName' value={lastName} onChange={e => setLastName(e.target.value)} />

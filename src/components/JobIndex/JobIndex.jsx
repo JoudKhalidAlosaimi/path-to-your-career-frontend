@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { authRequest, getUserFromToken, clearTokens } from "../../lib/auth"
 
-function JobIndex() {
+function JobIndex({user}) {
     // TODO
     // make a axios call to our backend(using get)
     // save it in state
@@ -24,7 +24,8 @@ function JobIndex() {
     async function handleApplication(jobId) {
         const ApplicationData = {
             job : jobId,
-            status : "Applied"
+            status : "Applied",
+            owner : user.user_id
         }
         const response = await authRequest({method: 'post', url: 'http://127.0.0.1:8000/api/applications/', data: ApplicationData})
         // https://stackoverflow.com/questions/55823296/reactjs-prevstate-in-the-new-usestate-react-hook
@@ -39,7 +40,8 @@ function JobIndex() {
 
     async function handleApplicationStatusChange(e,jobId,applicationId) {
         const ApplicationStatusUpdate = {
-            status : e.target.value
+            status : e.target.value,
+            owner : user.user_id
         }
         const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
         setApplication(prevState => ({

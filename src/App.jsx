@@ -42,7 +42,7 @@ function App() {
         <Route path='/profile' element={<UserProfile user={user}/>} />
 
         <Route path='/home' element={<HomePage/>}/>
-        <Route path='/jobs' element={<JobIndex/>}/>
+        <Route path='/jobs' element={<JobIndex user={user}/>}/>
         <Route path='/courses' element={<CourseIndex/>}/>
         <Route path='/bootcamps' element={<BootcampIndex/>}/>
       </Routes>
