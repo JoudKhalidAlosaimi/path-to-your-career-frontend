@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { authRequest } from '../../lib/auth'
+import CourseSearch from './CourseSearch'
 
 function CourseIndex({user}) {
     // TODO
@@ -9,6 +10,7 @@ function CourseIndex({user}) {
     // display all the courses
 
     const [courses,setCourses] = useState([])
+    const [displayedCourses,setDisplayedCourses] = useState([])
     const [application, setApplication] = useState({})
 
     async function getAllCourses(){
@@ -19,6 +21,17 @@ function CourseIndex({user}) {
     useEffect(() => {
         getAllCourses()
     }, [])
+
+    const searchCourses = (searchInput) => {
+    const filteredCourses = courses.filter(course => 
+        (course.title || '').toLowerCase().includes((searchInput || '').toLowerCase())
+    )
+    setDisplayedCourses(filteredCourses);
+    }
+
+    const reset = () => {
+        setDisplayedCourses(courses)
+    }
 
     async function handleApplication(courseId) {
         const ApplicationData = {
@@ -55,10 +68,12 @@ function CourseIndex({user}) {
     return (
         <div className="min-h-screen p-8 pt-30">
             <h1 className="text-3xl font-bold text-center mb-8">Available Courses</h1>
+            <h2 className="text-3xl font-bold text-center mb-8">Search</h2>
+            <CourseSearch searchCourses={searchCourses} displayedCourses={displayedCourses.length} reset={reset}/>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {
-                    courses.length ?
-                    courses.map((course,index) => {
+                    displayedCourses.length ?
+                    displayedCourses.map((course,index) => {
                         return (
                             <div key={index} className="bg-white shadow-md rounded-xl p-6">
                                 <h2 className="text-xl font-semibold text-gray-800 mb-2">{course.title}</h2>
