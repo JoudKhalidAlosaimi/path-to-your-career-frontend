@@ -21,7 +21,7 @@ export default function Login({ setUser }) {
     }
 
 return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="pt-20">
         <h2>Login</h2>
         <input placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
         <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
