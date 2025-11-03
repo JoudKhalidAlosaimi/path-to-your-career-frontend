@@ -7,6 +7,7 @@ import JobIndex from './components/JobIndex/JobIndex'
 import CourseIndex from './components/CourseIndex/CourseIndex'
 import BootcampIndex from './components/BootcampIndex/BootcampIndex'
 import HomePage from './components/HomePage/HomePage'
+import ApplicationIndex from './components/ApplicationIndex/ApplicationIndex'
 
 import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
@@ -45,6 +46,7 @@ function App() {
         <Route path='/jobs' element={<JobIndex user={user}/>}/>
         <Route path='/courses' element={<CourseIndex user={user}/>}/>
         <Route path='/bootcamps' element={<BootcampIndex user={user}/>}/>
+        <Route path='/applications' element={<ApplicationIndex user={user}/>}/>
       </Routes>
     </div>
     </div>

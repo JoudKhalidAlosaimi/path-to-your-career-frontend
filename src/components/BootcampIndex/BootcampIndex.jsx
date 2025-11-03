@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BootcampSearch from './BootcampSearch'
+import { authRequest } from '../../lib/auth'
 
 function BootcampIndex({user}) {
     // TODO
@@ -39,7 +40,7 @@ function BootcampIndex({user}) {
             status : "Applied",
             owner : user.user_id
         }
-        const response = await axios.post('http://127.0.0.1:8000/api/applications/', ApplicationData)
+        const response = await authRequest({method:'post',url:'http://127.0.0.1:8000/api/applications/', data: ApplicationData})
         setApplication(prevState => ({
             ...prevState,
             [bootcampId] : {
@@ -54,7 +55,7 @@ function BootcampIndex({user}) {
             status : e.target.value,
             owner : user.user_id
         }
-        const response = await axios.put(`http://127.0.0.1:8000/api/applications/${applicationId}/`,ApplicationStatusUpdate)
+        const response = await authRequest({method:'put', url:`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
         setApplication(prevState => ({
             ...prevState,
             [bootcampId] : {
