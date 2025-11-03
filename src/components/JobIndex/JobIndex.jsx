@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import axios from 'axios'
 import { authRequest, getUserFromToken, clearTokens } from "../../lib/auth"
 import JobSearch from './JobSearch'
@@ -12,6 +12,7 @@ function JobIndex({user}) {
     const [jobs,setJobs] = useState([])
     const [displayedJobs,setDisplayedJobs] = useState([])
     const [application, setApplication] = useState({})
+    const [bookmarked,setBookmarked] = useState({})
 
 
     async function getAllJobs(){
@@ -39,7 +40,7 @@ function JobIndex({user}) {
         const ApplicationData = {
             job : jobId,
             status : "Applied",
-            owner : user.user_id
+            owner : user.user_id,
         }
         const response = await authRequest({method: 'post', url: 'http://127.0.0.1:8000/api/applications/', data: ApplicationData})
         // https://stackoverflow.com/questions/55823296/reactjs-prevstate-in-the-new-usestate-react-hook
@@ -47,7 +48,7 @@ function JobIndex({user}) {
             ...prevState,
             [jobId] : {
                 status : response.data.status,
-                id : response.data.id
+                id : response.data.id,
             }
         }))
     }
@@ -55,19 +56,45 @@ function JobIndex({user}) {
     async function handleApplicationStatusChange(e,jobId,applicationId) {
         const ApplicationStatusUpdate = {
             status : e.target.value,
-            owner : user.user_id
+            owner : user.user_id,
         }
         const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
         setApplication(prevState => ({
             ...prevState,
             [jobId] : {
                 ...prevState[jobId],
-                status : response.data.status
+                status : response.data.status,
             }
-            
         }))
-        console.log(response.data.id)
     }
+
+    async function handleBookmark(bookmarkedId, jobId) {
+        console.log(bookmarked)
+        const current = bookmarked[jobId]?.value || false;
+        let response = {}
+        if (bookmarkedId) {
+            response = await authRequest({method : 'delete', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkedId}/`,
+            data : {
+                is_bookmarked: !current, 
+                owner : user.user_id
+            }})
+        } else {
+            response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
+                data : {
+                    job: jobId,
+                    owner : user.user_id
+                }
+            })
+        }
+        setBookmarked(prev => ({
+            ...prev,
+            [jobId]: {
+                id: response.data.id,
+                value: response.data.is_bookmarked
+            }
+        }))
+    }
+    
     return (
         <div className="min-h-screen p-8 pt-30">
             <h1 className="text-3xl font-bold text-center mb-8">Available Jobs</h1>
@@ -101,11 +128,22 @@ function JobIndex({user}) {
                                         </select>
                                     </div>
                                     :
+                                    <>
                                     <button 
                                     onClick={() => {handleApplication(job.id)}}
                                     className="w-full bg-blue-600 text-white font-medium rounded-md p-2 mt-4 hover:bg-blue-700 transition">
                                         Mark As Applied
                                     </button>
+                                    <button
+                                        onClick={() => handleBookmark(bookmarked[job.id]?.id, job.id)}
+                                        className="w-full bg-blue-600 text-white font-medium rounded-md p-2 mt-4 hover:bg-blue-700 transition">
+                                        {bookmarked[job.id]?.value  ? (
+                                            <i className="fa-solid fa-bookmark"></i>
+                                        ) : (
+                                            <i className="fa-regular fa-bookmark"></i>
+                                        )}
+                                    </button>
+                                    </>
                                 }
                             </div>
                             )

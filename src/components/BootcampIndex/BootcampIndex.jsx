@@ -12,6 +12,7 @@ function BootcampIndex({user}) {
     const [bootcamps,setBootcamps] = useState([])
     const [displayedBootcamps,setDisplayedBootcamps] = useState([])
     const [application, setApplication] = useState({})
+    const [bookmarked,setBookmarked] = useState({})
 
     async function getAllBootcamps(){
         const response = await axios.get('http://127.0.0.1:8000/api/bootcamps/')
@@ -64,7 +65,33 @@ function BootcampIndex({user}) {
             }
             
         }))
-        console.log(response.data.id)
+    }
+
+    async function handleBookmark(bookmarkedId, bootcampId) {
+        console.log(bookmarked)
+        const current = bookmarked[bootcampId]?.value || false;
+        let response = {}
+        if (bookmarkedId) {
+            response = await authRequest({method : 'delete', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkedId}/`,
+            data : {
+                is_bookmarked: !current, 
+                owner : user.user_id
+            }})
+        } else {
+            response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
+                data : {
+                    bootcamp: bootcampId,
+                    owner : user.user_id
+                }
+            })
+        }
+        setBookmarked(prev => ({
+            ...prev,
+            [bootcampId]: {
+                id: response.data.id,
+                value: response.data.is_bookmarked
+            }
+        }))
     }
     return (
         <div className="min-h-screen p-8 pt-30">
@@ -99,11 +126,22 @@ function BootcampIndex({user}) {
                                         </select>
                                     </div>
                                     :
+                                    <>
                                     <button 
                                     onClick={() => {handleApplication(bootcamp.id)}}
                                     className="w-full bg-blue-600 text-white font-medium rounded-md p-2 mt-4 hover:bg-blue-700 transition">
                                         Mark As Applied
                                     </button>
+                                    <button
+                                    onClick={() => handleBookmark(bookmarked[bootcamp.id]?.id, bootcamp.id)}
+                                    className="w-full bg-blue-600 text-white font-medium rounded-md p-2 mt-4 hover:bg-blue-700 transition">
+                                        {bookmarked[bootcamp.id]?.value  ? (
+                                            <i className="fa-solid fa-bookmark"></i>
+                                        ) : (
+                                            <i className="fa-regular fa-bookmark"></i>
+                                        )}
+                                    </button>
+                                    </>
                                 }
                             </div>
                             )

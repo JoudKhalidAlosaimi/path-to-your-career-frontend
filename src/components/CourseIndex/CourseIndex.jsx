@@ -12,6 +12,7 @@ function CourseIndex({user}) {
     const [courses,setCourses] = useState([])
     const [displayedCourses,setDisplayedCourses] = useState([])
     const [application, setApplication] = useState({})
+    const [bookmarked,setBookmarked] = useState({})
 
     async function getAllCourses(){
         const response = await axios.get('http://127.0.0.1:8000/api/courses/')
@@ -67,6 +68,33 @@ function CourseIndex({user}) {
             }
         }))
     }
+
+    async function handleBookmark(bookmarkedId, courseId) {
+        console.log(bookmarked)
+        const current = bookmarked[courseId]?.value || false;
+        let response = {}
+        if (bookmarkedId) {
+            response = await authRequest({method : 'delete', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkedId}/`,
+            data : {
+                is_bookmarked: !current, 
+                owner : user.user_id
+            }})
+        } else {
+            response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
+                data : {
+                    course: courseId,
+                    owner : user.user_id
+                }
+            })
+        }
+        setBookmarked(prev => ({
+            ...prev,
+            [courseId]: {
+                id: response.data.id,
+                value: response.data.is_bookmarked
+            }
+        }))
+    }
     return (
         <div className="min-h-screen p-8 pt-30">
             <h1 className="text-3xl font-bold text-center mb-8">Available Courses</h1>
@@ -99,12 +127,22 @@ function CourseIndex({user}) {
                                     </select>
                                 </div>
                                 :
+                                <>
                                 <button 
                                 onClick={() => {handleApplication(course.id)}}
                                 className="w-full bg-blue-600 text-white font-medium rounded-md p-2 mt-4 hover:bg-blue-700 transition">
                                     Mark As Applied
                                 </button>
-                                
+                                <button
+                                onClick={() => handleBookmark(bookmarked[course.id]?.id, course.id)}
+                                className="w-full bg-blue-600 text-white font-medium rounded-md p-2 mt-4 hover:bg-blue-700 transition">
+                                    {bookmarked[course.id]?.value  ? (
+                                        <i className="fa-solid fa-bookmark"></i>
+                                    ) : (
+                                        <i className="fa-regular fa-bookmark"></i>
+                                    )}
+                                </button>
+                                </>
                             }
                         </div>
                         )
