@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import LogOutButton from "../Auth/LogOutButton"
-
+import './NavBar.css'
 
 function NavBar({ user, setUser, handleMode,isDarkMode }) {
 
@@ -10,7 +10,7 @@ function NavBar({ user, setUser, handleMode,isDarkMode }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex flex-row w-full justify-between">
-                            <div className="font-bold">
+                            <div className="flex justify-center font-bold">
                                 <button
                                     onClick={handleMode}
                                     className="cursor-pointer">
@@ -29,10 +29,15 @@ function NavBar({ user, setUser, handleMode,isDarkMode }) {
                             {
                                 user
                                 ?
-                                <>
-                                    <Link to={'/profile'}>Account</Link>
-                                    <LogOutButton setUser={setUser} />
-                                </>
+                                <div className="dropdown">
+                                    <button className="dropbtn"> Account
+                                        <i className="fa fa-caret-down"></i>
+                                    </button>
+                                    <div className="dropdown-content">
+                                        <Link to='/profile'>Account</Link>
+                                        <LogOutButton setUser={setUser} />
+                                    </div>
+                                </div>
                                 :
                                 <>
                                     <Link to={'/login'}>Login</Link>
