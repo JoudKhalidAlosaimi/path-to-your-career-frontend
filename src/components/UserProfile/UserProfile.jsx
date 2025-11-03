@@ -12,11 +12,16 @@ function UserProfile() {
         phone_number :'',
         gender : ''
     })
+    const [errors,setErrors] = useState(null)
 
 
     async function getProfile() {
-        const response = await authRequest({method:'get', url:`http://127.0.0.1:8000/api/profile/`})
-        setFormData(response.data)
+        try {
+            const response = await authRequest({method:'get', url:`http://127.0.0.1:8000/api/profile/`})
+            setFormData(response.data)
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     useEffect(() => {
@@ -30,8 +35,12 @@ function UserProfile() {
 
     async function handleSubmit(e) {
         e.preventDefault()
-        const response = await authRequest({method: 'put', url: `http://127.0.0.1:8000/api/profile/`, data :formData})
-        console.log(response.data)
+        try {
+            const response = await authRequest({method: 'put', url: `http://127.0.0.1:8000/api/profile/`, data :formData})
+            console.log(response.data)
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
 return (

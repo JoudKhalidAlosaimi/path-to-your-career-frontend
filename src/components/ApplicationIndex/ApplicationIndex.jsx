@@ -6,10 +6,15 @@ import './ApplicationIndex.css'
 function ApplicationIndex() {
 
     const [applications,setApplications] = useState([])
+    const [errors, setErrors] = useState(null)
 
     async function getAllApplications(){
-        const response = await authRequest({method:'get', url:'http://127.0.0.1:8000/api/applications/'})
-        setApplications(response.data)
+        try {
+            const response = await authRequest({method:'get', url:'http://127.0.0.1:8000/api/applications/'})
+            setApplications(response.data)
+        } catch (error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     useEffect(() => {
@@ -18,10 +23,14 @@ function ApplicationIndex() {
 
 
     async function handleApplicationDelete(applicationId){
-        const response = await authRequest({method: 'delete', url:`http://127.0.0.1:8000/api/applications/${applicationId}/`})
-        setApplications((prevState) => {
-            return prevState.filter((application) => application.id !== applicationId)
-        })
+        try {
+            const response = await authRequest({method: 'delete', url:`http://127.0.0.1:8000/api/applications/${applicationId}/`})
+            setApplications((prevState) => {
+                return prevState.filter((application) => application.id !== applicationId)
+            })
+        } catch (error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     

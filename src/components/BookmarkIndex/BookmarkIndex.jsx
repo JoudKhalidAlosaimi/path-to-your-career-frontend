@@ -5,10 +5,15 @@ import { authRequest } from '../../lib/auth'
 
 function BookmarkIndex() {
     const[bookmarks,setBookmarks] = useState([])
+    const [errors, setErrors] = useState(null)
 
     async function getAllBookmarks() {
-        const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/bookmarks/'})
-        setBookmarks(response.data)
+        try {
+            const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/bookmarks/'})
+            setBookmarks(response.data)
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     useEffect(() => {
@@ -16,10 +21,14 @@ function BookmarkIndex() {
     }, [])
 
     async function handleBookmark(bookmarkId) {
-        const response = await authRequest({method : 'delete', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkId}/`})
-        setBookmarks((prevState) => {
-            return prevState.filter(bookmark => bookmark.id !== bookmarkId)
-        })
+        try {
+            const response = await authRequest({method : 'delete', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkId}/`})
+            setBookmarks((prevState) => {
+                return prevState.filter(bookmark => bookmark.id !== bookmarkId)
+            })
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 return (
     <div>

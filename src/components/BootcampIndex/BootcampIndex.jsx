@@ -13,11 +13,16 @@ function BootcampIndex({user}) {
     const [displayedBootcamps,setDisplayedBootcamps] = useState([])
     const [application, setApplication] = useState({})
     const [bookmarked,setBookmarked] = useState({})
+    const [errors,setErrors] = useState(null)
 
     async function getAllBootcamps(){
-        const response = await axios.get('http://127.0.0.1:8000/api/bootcamps/')
-        setBootcamps(response.data)
-        setDisplayedBootcamps(response.data)
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/bootcamps/')
+            setBootcamps(response.data)
+            setDisplayedBootcamps(response.data)
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     useEffect(() => {
@@ -25,10 +30,10 @@ function BootcampIndex({user}) {
     }, [])
 
     const searchBootcamps = (searchInput) => {
-    const filteredBootcamps = bootcamps.filter(bootcamp => 
-        (bootcamp.title || '').toLowerCase().includes((searchInput || '').toLowerCase())
-    )
-    setDisplayedBootcamps(filteredBootcamps);
+        const filteredBootcamps = bootcamps.filter(bootcamp => 
+            (bootcamp.title || '').toLowerCase().includes((searchInput || '').toLowerCase())
+        )
+        setDisplayedBootcamps(filteredBootcamps);
     }
 
     const reset = () => {
@@ -41,14 +46,18 @@ function BootcampIndex({user}) {
             status : "Applied",
             owner : user.user_id
         }
-        const response = await authRequest({method:'post',url:'http://127.0.0.1:8000/api/applications/', data: ApplicationData})
-        setApplication(prevState => ({
-            ...prevState,
-            [bootcampId] : {
-                status : response.data.status,
-                id : response.data.id
-            }
-        }))
+        try {
+            const response = await authRequest({method:'post',url:'http://127.0.0.1:8000/api/applications/', data: ApplicationData})
+            setApplication(prevState => ({
+                ...prevState,
+                [bootcampId] : {
+                    status : response.data.status,
+                    id : response.data.id
+                }
+            }))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     async function handleApplicationStatusChange(e,bootcampId,applicationId) {
@@ -56,42 +65,49 @@ function BootcampIndex({user}) {
             status : e.target.value,
             owner : user.user_id
         }
-        const response = await authRequest({method:'put', url:`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
-        setApplication(prevState => ({
-            ...prevState,
-            [bootcampId] : {
-                ...prevState[bootcampId],
-                status : response.data.status
-            }
-            
-        }))
+        try {
+            const response = await authRequest({method:'put', url:`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
+            setApplication(prevState => ({
+                ...prevState,
+                [bootcampId] : {
+                    ...prevState[bootcampId],
+                    status : response.data.status
+                }
+                
+            }))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     async function handleBookmark(bookmarkedId, bootcampId) {
-        console.log(bookmarked)
         const current = bookmarked[bootcampId]?.value || false;
         let response = {}
-        if (bookmarkedId) {
+        try {
+            if (bookmarkedId) {
             response = await authRequest({method : 'delete', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkedId}/`,
             data : {
                 is_bookmarked: !current, 
                 owner : user.user_id
             }})
-        } else {
-            response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
-                data : {
-                    bootcamp: bootcampId,
-                    owner : user.user_id
-                }
-            })
-        }
-        setBookmarked(prev => ({
-            ...prev,
-            [bootcampId]: {
-                id: response.data.id,
-                value: response.data.is_bookmarked
+            } else {
+                response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
+                    data : {
+                        bootcamp: bootcampId,
+                        owner : user.user_id
+                    }
+                })
             }
-        }))
+            setBookmarked(prev => ({
+                ...prev,
+                [bootcampId]: {
+                    id: response.data.id,
+                    value: response.data.is_bookmarked
+                }
+            }))
+            } catch (error) {
+                setErrors(error.response.data.error)
+            }
     }
     return (
         <div className="min-h-screen p-8 pt-30">

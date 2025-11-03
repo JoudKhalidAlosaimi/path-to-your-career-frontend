@@ -13,12 +13,17 @@ function JobIndex({user}) {
     const [displayedJobs,setDisplayedJobs] = useState([])
     const [application, setApplication] = useState({})
     const [bookmarked,setBookmarked] = useState({})
+    const [errors, setErrors] = useState(null)
 
 
     async function getAllJobs(){
-        const response = await axios.get('http://127.0.0.1:8000/api/jobs/')
-        setJobs(response.data)
-        setDisplayedJobs(response.data)
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/jobs/')
+            setJobs(response.data)
+            setDisplayedJobs(response.data)
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     useEffect(() => {
@@ -42,15 +47,19 @@ function JobIndex({user}) {
             status : "Applied",
             owner : user.user_id,
         }
-        const response = await authRequest({method: 'post', url: 'http://127.0.0.1:8000/api/applications/', data: ApplicationData})
-        // https://stackoverflow.com/questions/55823296/reactjs-prevstate-in-the-new-usestate-react-hook
-        setApplication(prevState => ({
-            ...prevState,
-            [jobId] : {
-                status : response.data.status,
-                id : response.data.id,
-            }
-        }))
+        try {
+            const response = await authRequest({method: 'post', url: 'http://127.0.0.1:8000/api/applications/', data: ApplicationData})
+            // https://stackoverflow.com/questions/55823296/reactjs-prevstate-in-the-new-usestate-react-hook
+            setApplication(prevState => ({
+                ...prevState,
+                [jobId] : {
+                    status : response.data.status,
+                    id : response.data.id,
+                }
+            }))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     async function handleApplicationStatusChange(e,jobId,applicationId) {
@@ -58,41 +67,49 @@ function JobIndex({user}) {
             status : e.target.value,
             owner : user.user_id,
         }
-        const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
-        setApplication(prevState => ({
-            ...prevState,
-            [jobId] : {
-                ...prevState[jobId],
-                status : response.data.status,
-            }
-        }))
+        try {
+            const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
+            setApplication(prevState => ({
+                ...prevState,
+                [jobId] : {
+                    ...prevState[jobId],
+                    status : response.data.status,
+                }
+            }))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     async function handleBookmark(bookmarkedId, jobId) {
         console.log(bookmarked)
         const current = bookmarked[jobId]?.value || false;
         let response = {}
-        if (bookmarkedId) {
+        try {
+            if (bookmarkedId) {
             response = await authRequest({method : 'delete', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkedId}/`,
             data : {
                 is_bookmarked: !current, 
                 owner : user.user_id
             }})
-        } else {
-            response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
-                data : {
-                    job: jobId,
-                    owner : user.user_id
-                }
-            })
-        }
-        setBookmarked(prev => ({
-            ...prev,
-            [jobId]: {
-                id: response.data.id,
-                value: response.data.is_bookmarked
+            } else {
+                response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
+                    data : {
+                        job: jobId,
+                        owner : user.user_id
+                    }
+                })
             }
-        }))
+            setBookmarked(prev => ({
+                ...prev,
+                [jobId]: {
+                    id: response.data.id,
+                    value: response.data.is_bookmarked
+                }
+            }))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
     
     return (

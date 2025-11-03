@@ -13,12 +13,16 @@ function CourseIndex({user}) {
     const [displayedCourses,setDisplayedCourses] = useState([])
     const [application, setApplication] = useState({})
     const [bookmarked,setBookmarked] = useState({})
+    const [errors, setErrors] = useState(null)
 
     async function getAllCourses(){
-        const response = await axios.get('http://127.0.0.1:8000/api/courses/')
-        setCourses(response.data)
-        setDisplayedCourses(response.data)
-
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/courses/')
+            setCourses(response.data)
+            setDisplayedCourses(response.data)
+        } catch (error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     useEffect(() => {
@@ -42,15 +46,18 @@ function CourseIndex({user}) {
             status : "Applied",
             owner : user.user_id
         }
-        const response = await authRequest({method: 'post', url: 'http://127.0.0.1:8000/api/applications/', data:ApplicationData})
-        console.log(response.data)
-        setApplication( prevStatus => ({
-            ...prevStatus,
-            [courseId] : {
-                id : response.data.id,
-                status : response.data.status
-            }
-        }))
+        try {
+            const response = await authRequest({method: 'post', url: 'http://127.0.0.1:8000/api/applications/', data:ApplicationData})
+            setApplication( prevStatus => ({
+                ...prevStatus,
+                [courseId] : {
+                    id : response.data.id,
+                    status : response.data.status
+                }
+            }))
+        } catch (error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     async function handleApplicationStatusChange(e,courseId,applicationId) {
@@ -58,42 +65,50 @@ function CourseIndex({user}) {
             status : e.target.value,
             owner : user.user_id
         }
-        const response = await authRequest({method: 'put', url : `http://127.0.0.1:8000/api/applications/${applicationId}/`,data : ApplicationStatusUpdate})
-        console.log(response.data)
-        setApplication(prevStatus => ({
-            ...prevStatus,
-            [courseId] : {
-                ...courseId,
-                status : response.data.status
-            }
-        }))
+        try {
+            const response = await authRequest({method: 'put', url : `http://127.0.0.1:8000/api/applications/${applicationId}/`,data : ApplicationStatusUpdate})
+            console.log(response.data)
+            setApplication(prevStatus => ({
+                ...prevStatus,
+                [courseId] : {
+                    ...courseId,
+                    status : response.data.status
+                }
+            }))
+        } catch (error) {
+            setErrors(error.response.data.error)
+        }
     }
 
     async function handleBookmark(bookmarkedId, courseId) {
         console.log(bookmarked)
         const current = bookmarked[courseId]?.value || false;
         let response = {}
-        if (bookmarkedId) {
+        try {
+            if (bookmarkedId) {
             response = await authRequest({method : 'delete', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkedId}/`,
             data : {
                 is_bookmarked: !current, 
                 owner : user.user_id
             }})
-        } else {
-            response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
-                data : {
-                    course: courseId,
-                    owner : user.user_id
-                }
-            })
-        }
-        setBookmarked(prev => ({
-            ...prev,
-            [courseId]: {
-                id: response.data.id,
-                value: response.data.is_bookmarked
+            } else {
+                response = await authRequest({method : 'post', url:' http://127.0.0.1:8000/api/bookmarks/', 
+                    data : {
+                        course: courseId,
+                        owner : user.user_id
+                    }
+                })
             }
-        }))
+            setBookmarked(prev => ({
+                ...prev,
+                [courseId]: {
+                    id: response.data.id,
+                    value: response.data.is_bookmarked
+                }
+            }))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
     }
     return (
         <div className="min-h-screen p-8 pt-30">
