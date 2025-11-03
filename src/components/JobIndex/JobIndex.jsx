@@ -22,8 +22,8 @@ function JobIndex({user}) {
     }
 
     useEffect(() => {
-            getAllJobs()
-        }, [])
+        getAllJobs()
+    }, [])
 
     const searchJobs = (searchInput) => {
     const filteredJobs = jobs.filter(job => 

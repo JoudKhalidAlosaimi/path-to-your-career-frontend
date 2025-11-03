@@ -15,6 +15,7 @@ import Login from './components/Auth/Login'
 
 import { getUserFromToken } from './lib/auth'
 import UserProfile from './components/UserProfile/UserProfile'
+import BookmarkIndex from './components/BookmarkIndex/BookmarkIndex'
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
         <Route path='/courses' element={<CourseIndex user={user}/>}/>
         <Route path='/bootcamps' element={<BootcampIndex user={user}/>}/>
         <Route path='/applications' element={<ApplicationIndex user={user}/>}/>
+        <Route path='/bookmarks' element={<BookmarkIndex user={user}/>}/>
       </Routes>
     </div>
     </div>

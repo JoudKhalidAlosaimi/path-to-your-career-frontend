@@ -36,6 +36,7 @@ function NavBar({ user, setUser, handleMode,isDarkMode }) {
                                     <div className="dropdown-content">
                                         <Link to='/profile'>Account</Link>
                                         <Link to='/applications'>Applications</Link>
+                                        <Link to='/bookmarks'>Bookmarks</Link>
                                         <LogOutButton setUser={setUser} />
                                     </div>
                                 </div>
