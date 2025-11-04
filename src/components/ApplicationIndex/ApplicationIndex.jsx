@@ -76,7 +76,7 @@ function ApplicationIndex({user}) {
         <div className="applications-container">
             <h1>My Applications</h1>
 
-            <table className="applications-table">
+            <table className="applications-table relative bg-linear-to-br from-gray-700 to-gray-900 p-8 rounded-3xl border border-black-600">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -96,11 +96,20 @@ function ApplicationIndex({user}) {
                                 <td>{application.job_title || application.course_title || application.bootcamp_title}</td>
                                 <td>
                                     {
-                                    application.job_title ? "Job"
+                                    application.job_title ? 
+                                    <span className="bg-blue-600/20 text-blue-500 text-sm px-5 py-3 rounded-full">
+                                        Job
+                                    </span>
                                     : 
-                                    application.course_title ? "Course"
+                                    application.course_title ?
+                                    <span className="bg-green-600/20 text-green-500 text-sm px-5 py-3 rounded-full">
+                                        Course
+                                    </span>
                                     : 
-                                    application.bootcamp_title ? "Bootcamp"
+                                    application.bootcamp_title ?
+                                    <span className="bg-purple-600/20 text-purple-500 text-sm px-5 py-3 rounded-full">
+                                        Bootcamp
+                                    </span>
                                     :
                                     ""
                                     }
@@ -119,7 +128,7 @@ function ApplicationIndex({user}) {
                                     <select 
                                     onChange={(e) => {handleApplicationStatusChange(e,application.id)}} 
                                     value={application.status}
-                                    className="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    className="w-full border border-gray-800 rounded-md p-2 text-sm text-gray-800 bg-blue-200">
                                         <option value="Applied">Applied</option>
                                         <option value="Rejected">Rejected</option>
                                         <option value="Interview">Interview</option>
