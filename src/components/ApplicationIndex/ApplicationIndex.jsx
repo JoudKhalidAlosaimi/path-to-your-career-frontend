@@ -4,7 +4,7 @@ import { authRequest, getUserFromToken, clearTokens } from "../../lib/auth"
 import './ApplicationIndex.css'
 import Swal from 'sweetalert2'
 
-function ApplicationIndex() {
+function ApplicationIndex({user}) {
 
     const [applications,setApplications] = useState([])
     const [errors, setErrors] = useState(null)
@@ -52,6 +52,25 @@ function ApplicationIndex() {
         }
     }
 
+    async function handleApplicationStatusChange(e,applicationId) {
+        const ApplicationStatusUpdate = {
+            status : e.target.value,
+            owner : user.user_id,
+        }
+        try {
+            const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
+            // https://harmash.com/tutorials/react/usestate?utm_source=chatgpt.com
+            setApplications((prev) =>
+                prev.map((application) =>
+                    application.id === applicationId ? { ...application, status: response.data.status }
+                    :
+                    application
+            ))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
+    }
+
     
     return (
         <div className="applications-container">
@@ -64,6 +83,7 @@ function ApplicationIndex() {
                         <th>Title</th>
                         <th>Type</th>
                         <th>Status</th>
+                        <th>Change status</th>
                         <th>Delete</th>
                     </tr>
                 </thead>
@@ -94,7 +114,17 @@ function ApplicationIndex() {
                                     "Interview"
                                     }>
                                         {application.status}
-                                    </td>
+                                </td>
+                                <td>
+                                    <select 
+                                    onChange={(e) => {handleApplicationStatusChange(e,application.id)}} 
+                                    value={application.status}
+                                    className="w-full border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="Applied">Applied</option>
+                                        <option value="Rejected">Rejected</option>
+                                        <option value="Interview">Interview</option>
+                                    </select>
+                                </td>
                                 <td>
                                     <button 
                                     onClick={() => handleApplicationDelete(application.id)}
