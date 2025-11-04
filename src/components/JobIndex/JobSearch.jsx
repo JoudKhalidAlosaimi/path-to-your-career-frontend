@@ -29,16 +29,6 @@ function JobSearch({searchJobs,displayedJobs,reset}) {
 
 
     return (
-        // <div>
-        //     {lastSearch(prevSearchTerm)}
-        //     <form onSubmit={handleSubmit}>
-        //         <label>Search Term: </label>
-        //         <input value={searchInput} onChange={handleChange} />
-        //         <button>Search</button>
-        //     </form>
-        //     <p>Number of results: {displayedJobs.length}</p>
-        //     <button onClick={reset}>Show all jobs</button>
-        // </div>
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
             <div className="relative w-150 mb-5">
                 <input 
