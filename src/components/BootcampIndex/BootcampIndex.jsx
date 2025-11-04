@@ -41,9 +41,22 @@ function BootcampIndex({user}) {
         }
     }
 
+    async function getAllBookmarks() {
+        try {
+            const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/bookmarks/'})
+            const bookmarkes = {};
+            response.data.forEach(bookmark => {
+                bookmarkes[bookmark.bootcamp] = { id: bookmark.id, value : true }})
+            setBookmarked(bookmarkes)
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
+    }
+
     useEffect(() => {
         getAllBootcamps(),
-        getAllApplications()
+        getAllApplications(),
+        getAllBookmarks()
     }, [])
 
     const searchBootcamps = (searchInput) => {

@@ -41,9 +41,22 @@ function CourseIndex({user}) {
         }
     }
 
+    async function getAllBookmarks() {
+        try {
+            const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/bookmarks/'})
+            const bookmarkes = {};
+            response.data.forEach(bookmark => {
+                bookmarkes[bookmark.course] = { id: bookmark.id, value : true }})
+            setBookmarked(bookmarkes)
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
+    }
+
     useEffect(() => {
         getAllCourses(),
-        getAllApplications()
+        getAllApplications(),
+        getAllBookmarks()
     }, [])
 
     const searchCourses = (searchInput) => {

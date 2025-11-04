@@ -31,41 +31,50 @@ function BookmarkIndex() {
         }
     }
 return (
-    <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 pt-30">
-            {bookmarks.length > 0 ? 
-                bookmarks.map((bookmark) => 
-                <div key={bookmark.id} className="border rounded-lg p-4 shadow-md">
-                    {bookmark.job ?
-                    <>
-                    <h2 className="text-lg font-bold mb-2">{bookmark.job_title}</h2> 
-                    <p className="text-gray-600 mb-2">{bookmark.job_description}</p>
-                    </>
-                    :
-                    bookmark.course ?
-                    <>
-                    <h2 className="text-lg font-bold mb-2">{bookmark.course_title}</h2> 
-                    <p className="text-gray-600 mb-2">{bookmark.course_description}</p>
-                    </>
-                    :
-                    bookmark.bootcamp ?
-                    <>
-                    <h2 className="text-lg font-bold mb-2">{bookmark.bootcamp_title}</h2> 
-                    <p className="text-gray-600 mb-2">{bookmark.bootcamp_description}</p>
-                    </>
-                    : 
-                    'Loading ...'
-                    }
-                    
-                    <button
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                    onClick={() => handleBookmark(bookmark.id)}>
-                        Remove Bookmark
-                    </button>
+    <div className="min-h-screen text-white p-10 pt-28 mb-60">
+        <h1 className="text-3xl font-bold mb-10 text-center">My Bookmarks</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {bookmarks.length > 0 ?
+                bookmarks.map((bookmark) =>
+                    <div key={bookmark.id} className="relative bg-linear-to-br from-gray-700 to-gray-900 p-8 rounded-3xl hover:scale-[1.03] transition-all duration-400 border border-gray-600">
+                        {bookmark.job ?
+                        <>
+                        <span className="absolute top-5 left-6 bg-blue-600/20 text-blue-500 text-sm px-3 py-1 rounded-full">
+                            Job
+                        </span>
+                        <h2 className="text-xl font-semibold mb-2 mt-10 text-white">{bookmark.job_title}</h2> 
+                        <p className="text-gray-400 mb-12">{bookmark.job_description}</p>
+                        </>
+                        :
+                        bookmark.course ?
+                        <>
+                        <span className="absolute top-5 left-6 bg-green-600/20 text-green-400 text-sm px-3 py-1 rounded-full">
+                            Course
+                        </span>
+                        <h2 className="text-lg font-bold mb-2 mt-10 text-white">{bookmark.course_title}</h2> 
+                        <p className="text-gray-400 mb-2">{bookmark.course_description}</p>
+                        </>
+                        :
+                        bookmark.bootcamp ?
+                        <>
+                        <span className="absolute top-5 left-6 bg-purple-600/20 text-purple-400 text-sm px-3 py-1 rounded-full">
+                            Bootcamp
+                        </span>
+                        <h2 className="text-lg font-bold mb-2 mt-10 text-white">{bookmark.bootcamp_title}</h2> 
+                        <p className="text-gray-400 mb-2">{bookmark.bootcamp_description}</p>
+                        </>
+                        : 
+                        'Loading ...'
+                        }
+                        <button
+                        className="border border-red-600 text-red-400 font-medium px-6 py-2 rounded-xl hover:bg-red-900 hover:text-white"
+                        onClick={() => handleBookmark(bookmark.id)}>
+                            Remove Bookmark
+                        </button>
                     </div>
                 ) 
                 : 
-                <p>Sorry,no bookmarks yet...</p>
+                <p>you don't have bookmarks yet...</p>
             }
         </div>
     </div>
