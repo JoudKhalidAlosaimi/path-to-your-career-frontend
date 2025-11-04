@@ -11,6 +11,7 @@ import ApplicationIndex from './components/ApplicationIndex/ApplicationIndex'
 
 import Register from './components/Auth/Register'
 import Login from './components/Auth/Login'
+import ProtectedRoute from './components/Auth/ProtectedRoute'
 
 
 import { getUserFromToken } from './lib/auth'
@@ -47,8 +48,26 @@ function App() {
         <Route path='/jobs' element={<JobIndex user={user}/>}/>
         <Route path='/courses' element={<CourseIndex user={user}/>}/>
         <Route path='/bootcamps' element={<BootcampIndex user={user}/>}/>
-        <Route path='/applications' element={<ApplicationIndex user={user}/>}/>
-        <Route path='/bookmarks' element={<BookmarkIndex user={user}/>}/>
+
+
+        <Route 
+          path='/applications' 
+          element={
+            <ProtectedRoute>
+              <ApplicationIndex user={user}/>
+            </ProtectedRoute>}/>
+        <Route 
+          path='/bookmarks' 
+          element={
+            <ProtectedRoute>
+              <BookmarkIndex user={user}/>
+            </ProtectedRoute>}/>
+        <Route 
+          path='/profile'  
+          element={
+            <ProtectedRoute>
+              <UserProfile user={user}/>
+            </ProtectedRoute>}/>
       </Routes>
     </div>
     </div>
