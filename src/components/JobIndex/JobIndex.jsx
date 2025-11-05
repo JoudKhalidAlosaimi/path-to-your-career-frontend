@@ -197,6 +197,7 @@ function JobIndex({user}) {
                                     <p className="text-gray-600 mb-1"><span className="font-semibold">Company:</span> {job.company}</p>
                                     <p className="text-gray-500 text-sm mb-4">{job.description}</p>
                                     <p className={job.status === 'Open' ? "text-green-800 font-semibold" : "text-red-800 font-semibold"}>{job.status}</p>
+                                    <a href={job.link} target='_blank' className="text-purple-600 mb-1 text-sm cursor-pointer" >Visit the company's website to apply</a>
                                     {
                                         application[job.id]
                                         ?

@@ -193,7 +193,8 @@ return (
                                 <h2 className="text-xl font-semibold text-gray-800 mb-2">{bootcamp.title}</h2>
                                 <p className="text-gray-600 mb-1"><span className="font-medium">Company:</span> {bootcamp.provider}</p>
                                 <p className="text-gray-500 text-sm mb-4">{bootcamp.description}</p>
-                                <p className="text-gray-500 text-sm mb-4">Starts at : {bootcamp.start_date}, ends at :{bootcamp.end_date}</p>
+                                <p className={bootcamp.status === 'Open' ? "text-green-800 font-semibold" : "text-red-800 font-semibold"}>{bootcamp.status}</p>
+                                <a href={bootcamp.link} target='_blank' className="text-purple-600 mb-1 text-sm cursor-pointer" >Visit the company's website to apply</a>
                                 {
                                     application[bootcamp.id] 
                                     ?

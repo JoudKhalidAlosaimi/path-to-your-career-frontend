@@ -195,6 +195,7 @@ function CourseIndex({user}) {
                                 <p className="text-gray-600 mb-1"><span className="font-semibold">Company:</span> {course.provider}</p>
                                 <p className="text-gray-500 text-sm mb-4">{course.description}</p>
                                 <p className="text-gray-500 text-sm mb-4">{course.duration}</p>
+                                <a href={course.link} target='_blank' className="text-purple-600 mb-1 text-sm cursor-pointer" >Visit the company's website to apply</a>
 
                             {
                                 application[course.id] ?
