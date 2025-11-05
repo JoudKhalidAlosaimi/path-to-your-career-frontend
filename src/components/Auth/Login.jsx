@@ -25,9 +25,9 @@ export default function Login({ setUser }) {
 return (
         <>
         <div className="flex flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form onSubmit={handleSubmit} className="border bg-gray-800 p-10 rounded-2xl mt-20">
-                    <h2 className="text-center text-2xl/9 font-bold tracking-tight text-white mb-10">Sign in to your account</h2>
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md">
+                <form onSubmit={handleSubmit} className="border border-gray-700 p-10 rounded-2xl mt-20 bg-linear-to-br from-gray-700 to-gray-900">
+                    <h2 className="text-center text-3xl font-bold tracking-tight text-white mb-10">Sign in to your account</h2>
                     <div>
                         <label htmlFor="username" className="block text-sm/6 font-medium text-gray-100 mb-2">
                             Username
