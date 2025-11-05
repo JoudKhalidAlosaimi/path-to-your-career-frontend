@@ -1,13 +1,13 @@
 import { useState,useEffect } from "react"
 import axios from "axios"
-import { authRequest, getUserFromToken, clearTokens } from "../../lib/auth"
+import { authRequest,clearTokens} from "../../lib/auth"
+import { useNavigate } from "react-router"
+import Swal from "sweetalert2"
 
-function UserProfile() {
+function UserProfile({user,setUser}) {
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
-        username: '',
-        password: '',
         email: '',
         phone_number :'',
         gender : ''
@@ -19,6 +19,7 @@ function UserProfile() {
         try {
             const response = await authRequest({method:'get', url:`http://127.0.0.1:8000/api/profile/`})
             setFormData(response.data)
+            console.log(response.data)
         } catch(error) {
             setErrors(error.response.data.error)
         }
@@ -36,10 +37,9 @@ function UserProfile() {
     async function handleSubmit(e) {
         e.preventDefault()
         try {
-            const response = await authRequest({method: 'put', url: `http://127.0.0.1:8000/api/profile/`, data :formData})
-            console.log(response.data)
+            const response = await authRequest({method: 'put', url: 'http://127.0.0.1:8000/api/profile/', data :formData})
         } catch(error) {
-            setErrors(error.response.data.error)
+            setErrors(error.response)
         }
     }
 
@@ -84,7 +84,7 @@ return (
                             Phone Number
                         </label>
                         <div>
-                            <input value={formData.email} onChange={handleChange} id='email' name='email'
+                            <input value={formData.phone_number} onChange={handleChange} id='phone_number' name='phone_number'
                             className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white border border-gray-200 placeholder:text-gray-500 sm:text-sm/6 mb-3 hover:bg-gray-700"/>
                         </div>
                     </div>
@@ -106,7 +106,6 @@ return (
                             Save Changes
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>

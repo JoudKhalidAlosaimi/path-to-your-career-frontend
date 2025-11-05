@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { authRequest } from '../../lib/auth'
 
-function BookmarkIndex() {
+function BookmarkIndex({user}) {
     const[bookmarks,setBookmarks] = useState([])
     const [errors, setErrors] = useState(null)
 
@@ -30,6 +30,29 @@ function BookmarkIndex() {
             setErrors(error.response.data.error)
         }
     }
+
+    async function handleFavoriteChange(bookmarkId) {
+        const target = bookmarks.find((bookmark) => bookmark.id === bookmarkId)
+        const updatedFav = !target.is_favorite
+        try {
+            const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/bookmarks/${bookmarkId}/`,
+            data : {
+                is_favorite : updatedFav ,
+                owner : user.user_id
+            }})
+            setBookmarks((prev) =>
+                prev.map((bookmark) =>
+                    bookmark.id === bookmarkId
+                    ? { ...bookmark, is_favorite: updatedFav }
+                    : 
+                    bookmark
+                ))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
+    }
+    
+
 return (
     <div className="min-h-screen text-white p-10 pt-28 mb-60">
         <h1 className="text-3xl font-bold mb-10 text-center">My Bookmarks</h1>
@@ -71,6 +94,16 @@ return (
                         onClick={() => handleBookmark(bookmark.id)}>
                             Remove Bookmark
                         </button>
+                        <button
+                            onClick={() => handleFavoriteChange(bookmark.id)}
+                            className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-gray-100 text-pink-600 rounded-xl">
+                                {bookmark.is_favorite?
+                                    <i className="fa-solid fa-heart"></i>
+                                    : 
+                                    <i className="fa-regular fa-heart"></i>
+                                }
+                            </button>
+
                     </div>
                 ) 
                 : 

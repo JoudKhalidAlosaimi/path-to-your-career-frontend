@@ -144,7 +144,6 @@ function JobIndex({user}) {
                     }
                 })
             }
-        console.log(bookmarked)
         const current = bookmarked[jobId]?.value || false;
         let response = {}
         try {

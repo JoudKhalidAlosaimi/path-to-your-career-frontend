@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { authRequest, getUserFromToken, clearTokens } from "../../lib/auth"
+import { authRequest} from "../../lib/auth"
 import './ApplicationIndex.css'
 import Swal from 'sweetalert2'
 
@@ -22,6 +22,25 @@ function ApplicationIndex({user}) {
         getAllApplications()
     }, [])
 
+        async function handleApplicationStatusChange(e,applicationId) {
+        const ApplicationStatusUpdate = {
+            status : e.target.value,
+            owner : user.user_id,
+        }
+        try {
+            const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
+            // https://harmash.com/tutorials/react/usestate
+            setApplications((prev) =>
+                prev.map((application) =>
+                    application.id === applicationId ? { ...application, status: response.data.status }
+                    :
+                    application
+            ))
+        } catch(error) {
+            setErrors(error.response.data.error)
+        }
+    }
+
 
     async function handleApplicationDelete(applicationId){
         try {
@@ -41,7 +60,7 @@ function ApplicationIndex({user}) {
                 })
                 Swal.fire({
                 title: "Deleted!",
-                text: "Your file has been deleted.",
+                text: "Your application has been deleted.",
                 icon: "success"
                 });
             }
@@ -50,26 +69,7 @@ function ApplicationIndex({user}) {
         } catch (error) {
             setErrors(error.response.data.error)
         }
-    }
-
-    async function handleApplicationStatusChange(e,applicationId) {
-        const ApplicationStatusUpdate = {
-            status : e.target.value,
-            owner : user.user_id,
         }
-        try {
-            const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
-            // https://harmash.com/tutorials/react/usestate?utm_source=chatgpt.com
-            setApplications((prev) =>
-                prev.map((application) =>
-                    application.id === applicationId ? { ...application, status: response.data.status }
-                    :
-                    application
-            ))
-        } catch(error) {
-            setErrors(error.response.data.error)
-        }
-    }
 
     
     return (

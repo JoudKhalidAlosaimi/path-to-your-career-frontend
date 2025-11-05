@@ -66,7 +66,7 @@ function App() {
           path='/profile'  
           element={
             <ProtectedRoute>
-              <UserProfile user={user}/>
+              <UserProfile setUser={setUser}/>
             </ProtectedRoute>}/>
       </Routes>
     </div>
