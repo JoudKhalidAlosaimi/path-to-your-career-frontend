@@ -14,7 +14,6 @@ function JobIndex({user}) {
     const [application, setApplication] = useState({})
     const [bookmarked,setBookmarked] = useState({})
     const [errors, setErrors] = useState(null)
-    const [applied,setApplied] = useState({})
 
 
     async function getAllJobs(){
@@ -33,10 +32,11 @@ function JobIndex({user}) {
         }
         try {
             const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/applications/', data: ApplicantData})
-            const appliedObject = {};
+            // https://community.latenode.com/t/convert-array-to-object-in-react-js/491/4
+            const application = {};
             response.data.forEach(applied => {
-                appliedObject[applied.job] = { id: applied.id, status: applied.status }})
-            setApplied(appliedObject)
+                application[applied.job] = { id: applied.id, status: applied.status }})
+            setApplication(application)
         } catch(error) {
             setErrors(error.response.data.error)
         }
@@ -87,13 +87,6 @@ function JobIndex({user}) {
                     id : response.data.id,
                 }
             }))
-            setApplied(prevState => ({
-                ...prevState,
-                [jobId] : {
-                    status : response.data.status,
-                    id : response.data.id,
-                }
-            }))
         } catch(error) {
             setErrors(error.response.data.error)
         }
@@ -107,13 +100,6 @@ function JobIndex({user}) {
         try {
             const response = await authRequest({method: 'put', url :`http://127.0.0.1:8000/api/applications/${applicationId}/`, data :ApplicationStatusUpdate})
             setApplication(prevState => ({
-                ...prevState,
-                [jobId] : {
-                    ...prevState[jobId],
-                    status : response.data.status,
-                }
-            }))
-            setApplied(prevState => ({
                 ...prevState,
                 [jobId] : {
                     ...prevState[jobId],
@@ -181,15 +167,15 @@ function JobIndex({user}) {
                                     <p className="text-gray-500 text-sm mb-4">{job.description}</p>
                                     <p className={job.status === 'Open' ? "text-green-800 font-semibold" : "text-red-800 font-semibold"}>{job.status}</p>
                                     {
-                                        applied[job.id]
+                                        application[job.id]
                                         ?
                                         <div className="mt-4">
                                             <p className="text-medium font-medium text-gray-700 mb-2">
-                                                Status: <span className="text-blue-500 font-semibold">{applied[job.id].status}</span>
+                                                Status: <span className="text-blue-500 font-semibold">{application[job.id].status}</span>
                                             </p>
                                             <select 
-                                            onChange={(e) => {handleApplicationStatusChange(e,job.id,applied[job.id].id)}} 
-                                            value={applied[job.id].status}
+                                            onChange={(e) => {handleApplicationStatusChange(e,job.id,application[job.id].id)}} 
+                                            value={application[job.id].status}
                                             className="w-full border border-gray-800 rounded-md p-2 text-sm text-gray-800 bg-blue-200">
                                                 <option value="Applied">Applied</option>
                                                 <option value="Rejected">Rejected</option>

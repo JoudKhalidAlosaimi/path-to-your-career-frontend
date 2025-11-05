@@ -14,7 +14,6 @@ function CourseIndex({user}) {
     const [application, setApplication] = useState({})
     const [bookmarked,setBookmarked] = useState({})
     const [errors, setErrors] = useState(null)
-    const [applied,setApplied] = useState({})
 
     async function getAllCourses(){
         try {
@@ -32,10 +31,11 @@ function CourseIndex({user}) {
         }
         try {
             const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/applications/', data: ApplicantData})
-            const appliedObject = {};
+            // https://community.latenode.com/t/convert-array-to-object-in-react-js/491/4
+            const application = {};
             response.data.forEach(applied => {
-                appliedObject[applied.course] = { id: applied.id, status: applied.status }})
-            setApplied(appliedObject)
+                application[applied.course] = { id: applied.id, status: applied.status }})
+            setApplication(application)
         } catch(error) {
             setErrors(error.response.data.error)
         }
@@ -85,13 +85,6 @@ function CourseIndex({user}) {
                     status : response.data.status
                 }
             }))
-            setApplied( prevStatus => ({
-                ...prevStatus,
-                [courseId] : {
-                    id : response.data.id,
-                    status : response.data.status
-                }
-            }))
         } catch (error) {
             setErrors(error.response.data.error)
         }
@@ -106,13 +99,6 @@ function CourseIndex({user}) {
             const response = await authRequest({method: 'put', url : `http://127.0.0.1:8000/api/applications/${applicationId}/`,data : ApplicationStatusUpdate})
             console.log(response.data)
             setApplication(prevStatus => ({
-                ...prevStatus,
-                [courseId] : {
-                    ...courseId,
-                    status : response.data.status
-                }
-            }))
-            setApplied(prevStatus => ({
                 ...prevStatus,
                 [courseId] : {
                     ...courseId,
@@ -179,14 +165,14 @@ function CourseIndex({user}) {
                                 <p className="text-gray-500 text-sm mb-4">{course.duration}</p>
 
                             {
-                                applied[course.id] ?
+                                application[course.id] ?
                                 <div className="mt-4">
                                     <p className="text-sm font-medium text-gray-700 mb-2">
-                                        Status: <span className="text-blue-500 font-semibold">{applied[course.id].status}</span>
+                                        Status: <span className="text-blue-500 font-semibold">{application[course.id].status}</span>
                                     </p>
                                     <select 
-                                    onChange={(e) => {handleApplicationStatusChange(e,course.id,applied[course.id].id)}} 
-                                    value={applied[course.id]}
+                                    onChange={(e) => {handleApplicationStatusChange(e,course.id,application[course.id].id)}} 
+                                    value={application[course.id]}
                                     className="w-full border border-gray-800 rounded-md p-2 text-sm text-gray-800 bg-blue-200">
                                         <option value="Applied">Applied</option>
                                         <option value="Rejected">Rejected</option>
