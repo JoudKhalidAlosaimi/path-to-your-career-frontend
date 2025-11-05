@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { authRequest } from '../../lib/auth'
 import CourseSearch from './CourseSearch'
+import { useNavigate } from 'react-router'
+import Swal from 'sweetalert2'
 
 function CourseIndex({user}) {
     // TODO
@@ -14,6 +16,8 @@ function CourseIndex({user}) {
     const [application, setApplication] = useState({})
     const [bookmarked,setBookmarked] = useState({})
     const [errors, setErrors] = useState(null)
+
+    const navigate = useNavigate()
 
     async function getAllCourses(){
         try {
@@ -71,6 +75,20 @@ function CourseIndex({user}) {
     }
 
     async function handleApplication(courseId) {
+        if (!user) {
+            Swal.fire({
+                title: "Login required",
+                text: "You need to log in to mark applied.",
+                icon: "info",
+                showCancelButton: true,
+                cancelButtonText:"keep scrolling",
+                confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/login')
+                    }
+                })
+            }
         const ApplicationData = {
             course : courseId,
             status : "Applied",
@@ -111,6 +129,20 @@ function CourseIndex({user}) {
     }
 
     async function handleBookmark(bookmarkedId, courseId) {
+        if (!user) {
+            Swal.fire({
+                title: "Login required",
+                text: "You need to log in to save bookmarks..",
+                icon: "info",
+                showCancelButton: true,
+                cancelButtonText:"keep scrolling",
+                confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/login')
+                    }
+                })
+        }
         console.log(bookmarked)
         const current = bookmarked[courseId]?.value || false;
         let response = {}

@@ -1,7 +1,9 @@
 import { use, useEffect, useState } from 'react'
 import axios from 'axios'
-import { authRequest, getUserFromToken, clearTokens } from "../../lib/auth"
+import { authRequest,getUserFromToken } from "../../lib/auth"
 import JobSearch from './JobSearch'
+import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router'
 
 function JobIndex({user}) {
     // TODO
@@ -15,6 +17,7 @@ function JobIndex({user}) {
     const [bookmarked,setBookmarked] = useState({})
     const [errors, setErrors] = useState(null)
 
+    const navigate = useNavigate()
 
     async function getAllJobs(){
         try {
@@ -72,6 +75,20 @@ function JobIndex({user}) {
     }
 
     async function handleApplication(jobId) {
+        if (!user) {
+            Swal.fire({
+                title: "Login required",
+                text: "You need to log in to mark applied.",
+                icon: "info",
+                showCancelButton: true,
+                cancelButtonText:"keep scrolling",
+                confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/login')
+                    }
+                })
+        }
         const ApplicationData = {
             job : jobId,
             status : "Applied",
@@ -90,6 +107,7 @@ function JobIndex({user}) {
         } catch(error) {
             setErrors(error.response.data.error)
         }
+        
     }
 
     async function handleApplicationStatusChange(e,jobId,applicationId) {
@@ -112,6 +130,20 @@ function JobIndex({user}) {
     }
 
     async function handleBookmark(bookmarkedId, jobId) {
+        if (!user) {
+            Swal.fire({
+                title: "Login required",
+                text: "You need to log in to save bookmarks.",
+                icon: "info",
+                showCancelButton: true,
+                cancelButtonText:"keep scrolling",
+                confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/login')
+                    }
+                })
+            }
         console.log(bookmarked)
         const current = bookmarked[jobId]?.value || false;
         let response = {}
@@ -200,5 +232,6 @@ function JobIndex({user}) {
         </div>
     )
 }
+
 
 export default JobIndex
