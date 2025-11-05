@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BootcampSearch from './BootcampSearch'
 import { authRequest } from '../../lib/auth'
+import { useNavigate } from 'react-router'
+import Swal from 'sweetalert2'
 
 function BootcampIndex({user}) {
     // TODO
@@ -14,6 +16,8 @@ function BootcampIndex({user}) {
     const [application, setApplication] = useState({})
     const [bookmarked,setBookmarked] = useState({})
     const [errors,setErrors] = useState(null)
+
+    const navigate = useNavigate()
 
     async function getAllBootcamps(){
         try {
@@ -71,6 +75,20 @@ function BootcampIndex({user}) {
     }
 
     async function handleApplication(bootcampId) {
+        if (!user) {
+            Swal.fire({
+                title: "Login required",
+                text: "You need to log in to mark applied.",
+                icon: "info",
+                showCancelButton: true,
+                cancelButtonText:"keep scrolling",
+                confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/login')
+                        }
+                    })
+                }
         const ApplicationData = {
             bootcamp : bootcampId,
             status : "Applied",
@@ -110,6 +128,20 @@ function BootcampIndex({user}) {
     }
 
     async function handleBookmark(bookmarkedId, bootcampId) {
+        if (!user) {
+            Swal.fire({
+                title: "Login required",
+                text: "You need to log in to save bookmarks..",
+                icon: "info",
+                showCancelButton: true,
+                cancelButtonText:"keep scrolling",
+                confirmButtonText: "Login"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        navigate('/login')
+                    }
+                })
+            }
         const current = bookmarked[bootcampId]?.value || false;
         let response = {}
         try {
