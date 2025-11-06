@@ -1,16 +1,40 @@
-# React + Vite
+# A path to you career
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Description
 
-Currently, two official plugins are available:
+A path to your Career, a solo project, represents the culmination of the skills I've acquired during the last module of my GA Software Engineering Bootcamp. It is a full-stack application that is designed to help users explore different career opportunities through job listings, courses, and bootcamps while keeping track of everything they applied to. The backend was developed using Django and PostgreSQL, while the frontend was built with React, JavaScript and Tailwind CSS.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Getting started/Code Installation
 
-## React Compiler
+To clone the project up and running on your local machine, follow these instructions:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Clone the repo:
+- `git clone git@github.com:JoudKhalidAlosaimi/path-to-your-career-frontend.git`
+- `git clone git@github.com:JoudKhalidAlosaimi/path-to-your-career-backend.git`
 
-## Expanding the ESLint configuration
+### 2.Install backend dependencies:
+- `pipenv install`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 3.Start the backend server:
+- `python manage.py runserver`
+
+### 4. In a new terminal, navigate to the frontend directory and install dependencies:
+- `path-to-your-career-frontend`
+- `npm install`
+
+### 5. Start the React development server:
+- `npm run dev`
+
+# Technologies Used
+
+- Backend: Django, PostgreSQL
+- Frontend: React, JavaScript, Tailwind CSS,SweetAlert2
+- Dev Tools: Git, GitHub
+
+# Backend Repo Link
+- `https://github.com/JoudKhalidAlosaimi/path-to-your-career-backend`
+
+# Future Improvements 
+- Allow the user to search for a Job,Course,Bootcamp based on their field of interest.
+- Include a section that contains common interview questions asked by different companies.
+- Integrate AI system that suggests jobs,courses,bootcamps based on the user's skills.
