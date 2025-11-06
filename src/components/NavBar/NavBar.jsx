@@ -1,4 +1,4 @@
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import LogOutButton from "../Auth/LogOutButton"
 import './NavBar.css'
 import { useState } from "react"
@@ -8,6 +8,8 @@ import Swal from "sweetalert2"
 function NavBar({user,setUser,handleMode,isDarkMode }) {
 
     const [errors,setErrors] = useState(null)
+
+    const navigate = useNavigate()
 
 
     async function handleAccountDelete(userId) {
