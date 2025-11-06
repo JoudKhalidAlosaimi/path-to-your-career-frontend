@@ -1,6 +1,6 @@
 import { use, useEffect, useState } from 'react'
 import axios from 'axios'
-import { authRequest,getUserFromToken } from "../../lib/auth"
+import { authRequest } from "../../lib/auth"
 import JobSearch from './JobSearch'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router'
@@ -36,7 +36,7 @@ function JobIndex({user}) {
         try {
             const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/applications/', data: ApplicantData})
             // https://community.latenode.com/t/convert-array-to-object-in-react-js/491/4
-            const application = {};
+            const application = {}
             response.data.forEach(applied => {
                 application[applied.job] = { id: applied.id, status: applied.status }})
             setApplication(application)
@@ -48,7 +48,7 @@ function JobIndex({user}) {
     async function getAllBookmarks() {
         try {
             const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/bookmarks/'})
-            const bookmarkes = {};
+            const bookmarkes = {}
             response.data.forEach(bookmark => {
                 bookmarkes[bookmark.job] = { id: bookmark.id, value : true }})
             setBookmarked(bookmarkes)
@@ -107,7 +107,6 @@ function JobIndex({user}) {
         } catch(error) {
             setErrors(error.response.data.error)
         }
-        
     }
 
     async function handleApplicationStatusChange(e,jobId,applicationId) {
@@ -144,7 +143,7 @@ function JobIndex({user}) {
                     }
                 })
             }
-        const current = bookmarked[jobId]?.value || false;
+        const current = bookmarked[jobId]?.value || false
         let response = {}
         try {
             if (bookmarkedId) {

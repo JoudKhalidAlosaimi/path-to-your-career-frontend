@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import { authRequest} from "../../lib/auth"
 import './ApplicationIndex.css'
 import Swal from 'sweetalert2'

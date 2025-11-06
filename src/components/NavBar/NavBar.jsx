@@ -11,7 +11,6 @@ function NavBar({user,setUser,handleMode,isDarkMode }) {
 
 
     async function handleAccountDelete(userId) {
-            console.log(user)
         try {
             const result = await Swal.fire({
                 title: "Are you sure?",

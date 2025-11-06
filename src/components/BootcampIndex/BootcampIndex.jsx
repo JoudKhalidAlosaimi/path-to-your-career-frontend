@@ -36,7 +36,7 @@ function BootcampIndex({user}) {
         try {
             const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/applications/', data: ApplicantData})
             // https://community.latenode.com/t/convert-array-to-object-in-react-js/491/4
-            const application = {};
+            const application = {}
             response.data.forEach(applied => {
                 application[applied.bootcamp] = { id: applied.id, status: applied.status }})
             setApplication(application)
@@ -48,7 +48,7 @@ function BootcampIndex({user}) {
     async function getAllBookmarks() {
         try {
             const response = await authRequest({method: 'get', url: 'http://127.0.0.1:8000/api/bookmarks/'})
-            const bookmarkes = {};
+            const bookmarkes = {}
             response.data.forEach(bookmark => {
                 bookmarkes[bookmark.bootcamp] = { id: bookmark.id, value : true }})
             setBookmarked(bookmarkes)
@@ -142,7 +142,7 @@ function BootcampIndex({user}) {
                     }
                 })
             }
-        const current = bookmarked[bootcampId]?.value || false;
+        const current = bookmarked[bootcampId]?.value || false
         let response = {}
         try {
             if (bookmarkedId) {

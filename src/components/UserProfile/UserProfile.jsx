@@ -1,8 +1,5 @@
 import { useState,useEffect } from "react"
-import axios from "axios"
 import { authRequest,clearTokens} from "../../lib/auth"
-import { useNavigate } from "react-router"
-import Swal from "sweetalert2"
 
 function UserProfile({user,setUser}) {
     const [formData, setFormData] = useState({
@@ -19,7 +16,6 @@ function UserProfile({user,setUser}) {
         try {
             const response = await authRequest({method:'get', url:`http://127.0.0.1:8000/api/profile/`})
             setFormData(response.data)
-            console.log(response.data)
         } catch(error) {
             setErrors(error.response.data.error)
         }
@@ -31,7 +27,6 @@ function UserProfile({user,setUser}) {
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-        console.log(formData)
     }
 
     async function handleSubmit(e) {

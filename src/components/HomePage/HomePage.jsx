@@ -1,29 +1,19 @@
 import './HomePage.css'
 import { Link } from 'react-router'
+import pathImage from "../../assets/path.jpg"
 
 function HomePage() {
     return (
         <>
             <section className='hero-section'>
-                <h1 className="hero-title">Your Future Starts Here.</h1>
-                <p className="hero-subtitle">Discover your ideal career through comprehensive job Iistings, expert-led <br />
-                    courses, and intensive bootcamps. Your professional future starts here.
-                </p>
-                <div className="hero-buttons">
-                    <Link to={'/jobs'}>
-                        <button className="hero-button">
-                            <i className="fa-solid fa-magnifying-glass mr-2 text-white"></i>
-                            Explore Opportunities
-                        </button>
-                    </Link>
-
-                    <Link to={'/register'}>
-                        <button className="hero-button">
-                            <i className="fa-regular fa-user mr-2 text-white"></i>
-                            Create Profile
-                        </button>
-                    </Link>
+                <div className="w-full h-screen bg-cover bg-center relative"
+                style={{ backgroundImage: `url(${pathImage})` }}>
+                    <div className="absolute inset-0 bg-black/40"></div>
+                    <div className="relative flex flex-col justify-center items-center h-full text-white text-center">
+                        <h1 className="text-6xl font-bold mb-6">Path to<span className="text-blue-950"> Your</span>  Career</h1>
+                        <p className="text-lg max-w-md">Its time to find your path and follow your dreams</p>
                     </div>
+                </div>
             </section>
 
             <section className="success-section">
