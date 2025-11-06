@@ -91,7 +91,7 @@ function CourseIndex({user}) {
             }
         const ApplicationData = {
             course : courseId,
-            status : "Applied",
+            status : "Ongoing",
             owner : user.user_id
         }
         try {
@@ -207,9 +207,8 @@ function CourseIndex({user}) {
                                     onChange={(e) => {handleApplicationStatusChange(e,course.id,application[course.id].id)}} 
                                     value={application[course.id]}
                                     className="w-full border border-gray-800 rounded-md p-2 text-sm text-gray-800 bg-blue-200">
-                                        <option value="Applied">Applied</option>
-                                        <option value="Rejected">Rejected</option>
-                                        <option value="Interview">Interview</option>
+                                        <option value="Ongoing">Ongoing</option>
+                                        <option value="Completed">Completed</option>
                                     </select>
                                 </div>
                                 :

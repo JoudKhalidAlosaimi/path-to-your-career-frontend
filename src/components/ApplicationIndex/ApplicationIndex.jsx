@@ -124,6 +124,7 @@ function ApplicationIndex({user}) {
                                         {application.status}
                                 </td>
                                 <td>
+                                    { application.job_title  || application.bootcamp_title ?
                                     <select 
                                     onChange={(e) => {handleApplicationStatusChange(e,application.id)}} 
                                     value={application.status}
@@ -132,6 +133,15 @@ function ApplicationIndex({user}) {
                                         <option value="Rejected">Rejected</option>
                                         <option value="Interview">Interview</option>
                                     </select>
+                                    :
+                                    <select 
+                                    onChange={(e) => {handleApplicationStatusChange(e,application.id)}} 
+                                    value={application.status}
+                                    className="w-full border border-gray-800 rounded-md p-2 text-sm text-gray-800 bg-blue-200">
+                                        <option value="Ongoing">Ongoing</option>
+                                        <option value="Completed">Completed</option>
+                                    </select>
+                                    }
                                 </td>
                                 <td>
                                     <button 
